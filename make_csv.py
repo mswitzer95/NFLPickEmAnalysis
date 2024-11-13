@@ -118,10 +118,15 @@ def main():
     final_table["FAVE IMPLIED WIN %"] = np.min(
         np.array(
             [
-                (final_table["FAVE SPREAD"] * -0.0265 + 0.5).to_numpy(),
+                # Hardcoded based on analysis in "odds_to_win_percent.ipynb
+                # jupyter notebook - see notebook.
+                (final_table["FAVE SPREAD"] * -0.0305 + 0.5040).to_numpy(),
                 np.array([1] * len(final_table))]),
             
         axis=0)
+    final_table["FAVE IMPLIED WIN %"] = [
+        min(percent, 1.0) 
+        for percent in final_table["FAVE IMPLIED WIN %"].tolist()]
     final_table = pd.merge(
         final_table, pick_distributions_table, left_on="FAVE", right_on="team")
     final_table = final_table.drop(columns="team")
